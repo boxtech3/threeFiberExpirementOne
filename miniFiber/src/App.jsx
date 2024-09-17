@@ -1,29 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-// gonna try some threeFiber stuff
-import { createRoot } from 'react-dom/client'
-import { Canvas } from '@react-three/fiber'
+import { useRef } from 'react';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import './App.css';
+import { OrbitControls } from '@react-three/drei';
+import './shoesDemo.png';
+import boxTexture from './shoesDemo.png'; // Your texture image
 
-
-
-function App() {
+function RotatingBox() {
+  const meshRef = useRef();
+  const texture = useLoader(TextureLoader, boxTexture); // Load the texture
+  // Rotate the box every frame
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x += 0.01;
+      meshRef.current.rotation.y += 0.01;
+    }
+  });
 
   return (
-    <><p>Running Shoes</p><div id="canvas-container">
-      <Canvas>
-        <mesh>
-          <boxGeometry />
-          <boxGeometry args={[2, 2, 2]} />
-          <meshStandardMaterial />
-          <ambientLight intensity={0.1} />
-          <directionalLight color="red" position={[0, 0, 5]}/>
-        </mesh>
-      </Canvas>
-      <Canvas  />
-    </div></>
-  )
+    <mesh ref={meshRef}>
+      <boxGeometry args={[5, 5, 5]} />
+      <meshStandardMaterial map={texture} />
+    </mesh>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <>
+      <p>Running Shoes</p>
+      <div id="canvas-container">
+        <Canvas>
+        {/* <image src="./shoesDemo.png" /> */}
+          <ambientLight intensity={0.1} />
+          <directionalLight color="red" position={[0, 0, 5]} />
+          <RotatingBox />
+          <OrbitControls /> {/* Allows user interaction */}
+        </Canvas>
+      </div>
+    </>
+  );
+}
+
+export default App;
