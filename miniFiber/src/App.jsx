@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { TextureLoader } from 'three';
 import './App.css';
 import { OrbitControls } from '@react-three/drei';
 import './shoesDemo.png';
@@ -32,7 +33,7 @@ function App() {
         <Canvas>
         {/* <image src="./shoesDemo.png" /> */}
           <ambientLight intensity={0.1} />
-          <directionalLight color="red" position={[0, 0, 5]} />
+          <directionalLight color="white" position={[0, 0, 5]} />
           <RotatingBox />
           <OrbitControls /> {/* Allows user interaction */}
         </Canvas>
